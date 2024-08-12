@@ -7,8 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.0/JsBarcode.all.min.js"></script>
     <style>
-        
-    
         body {
             font-family: 'Poppins', Arial, sans-serif;
             display: flex;
@@ -16,17 +14,35 @@
             align-items: center;
             padding: 10px;
             background-color: #f0eef1;
+            margin: 0;
         }
 
-    .Logo  {
-        margin-bottom: 30px;
-        align-self: flex-start; /* Alinea el logo a la izquierda */
-    }
-    .titulo-principal {
-            color: #1d0d53; /* Color del texto */
-            font-size: 30px; /* Tamaño del texto */
-            margin-bottom: 5%; /* Margen inferior */
-            text-align: center; /* Alineación del texto */
+        .Logo {
+            margin-bottom: 30px;
+            align-self: flex-start;
+        }
+
+        .titulo-principal {
+            color: #1d0d53;
+            font-size: 30px;
+            margin-bottom: 5%;
+            text-align: center;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-direction: column; /* Por defecto, los contenedores están en columna */
+            align-items: center; /* Centra horizontalmente */
+            width: 100%;
+        }
+
+        .container-wrapper {
+            display: flex; /* Usa Flexbox para alinear los contenedores horizontalmente en pantallas grandes */
+            align-items: center;
+            gap: 20px; /* Espacio entre el contenedor y la imagen */
+            flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+            width: 100%;
+            max-width: 1200px; /* Ajusta el ancho máximo */
         }
 
         .container {
@@ -34,22 +50,37 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 12px 12px 1px rgba(0,0,0,0.1);
-            max-width: 500px; /* Ajusta el ancho máximo aquí */
-            width: 100%; /* Asegura que el contenedor ocupe el ancho completo disponible hasta el máximo especificado */
+            max-width: 500px;
+            width: 100%;
+            margin-right: 40px; 
         }
+
+        .container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .side-image {
+        
+            box-shadow: 12px 12px 1px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            border-radius: 15px;
+        }
+
         canvas {
             max-width: 100%;
             height: auto;
             margin-top: 20px;
         }
+
         input, button {
             margin: 10px;
             padding: 8px;
             margin-bottom: 40px;
             font-size: 20px;
-            font-family: 'Poppins', Arial, sans-serif;
-
         }
+
         button {
             background-color: #4CAF50;
             color: white;
@@ -57,19 +88,37 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         button:hover {
             background-color: #45a049;
         }
+
+        @media (max-width: 768px) {
+            .container-wrapper {
+                flex-direction: column; /* Cambia la dirección a columna en pantallas pequeñas */
+            }
+
+            .side-image {
+                display: block; /* Muestra la imagen en pantallas pequeñas */
+                margin-top: 20px; /* Espacio arriba en pantallas pequeñas */
+            }
+        }
     </style>
 </head>
-<body> 
+<body>
     <img src="logo-pharmaclub.png" alt="Logo de la empresa" class="Logo">
-    <div class="container">
-        <h1 class="titulo-principal">Generar Cheque Aurora</h1>
-        <input type="file" id="imageInput" accept="image/*">
-        <input type="text" id="barcodeInput" placeholder="Ingrese código ">
-        <button onclick="processImage()">Genere Cheque</button>
-        <canvas id="canvas"></canvas>
+    <div class="main-wrapper">
+        <div class="container-wrapper">
+            <div class="container">
+                <h1 class="titulo-principal">Generar Cheque Aurora</h1>
+                <p>* En seleccionar archivo coloca la imagen con el nombre de ID del cheque.</p>
+                <input type="file" id="imageInput" accept="image/*">
+                <input type="text" id="barcodeInput" placeholder="Numero codigo de barras ">
+                <button onclick="processImage()">Generar Cheque</button>
+                <canvas id="canvas"></canvas>
+            </div>
+            <img src="datos.png" alt="Imagen de Datos" class="side-image">
+        </div>
     </div>
 
     <script>
@@ -125,3 +174,5 @@
     </script>
 </body>
 </html>
+
+
