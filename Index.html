@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheque Digital Aurora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.0/JsBarcode.all.min.js"></script>
+    <style>
+        
+    
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0eef1;
+        }
+
+    .Logo  {
+        margin-bottom: 30px;
+        align-self: flex-start; /* Alinea el logo a la izquierda */
+    }
+    .titulo-principal {
+            color: #1d0d53; /* Color del texto */
+            font-size: 30px; /* Tamaño del texto */
+            margin-bottom: 5%; /* Margen inferior */
+            text-align: center; /* Alineación del texto */
+        }
+
+        .container {
+            background-color: rgb(235, 233, 250);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 12px 12px 1px rgba(0,0,0,0.1);
+            max-width: 500px; /* Ajusta el ancho máximo aquí */
+            width: 100%; /* Asegura que el contenedor ocupe el ancho completo disponible hasta el máximo especificado */
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+        input, button {
+            margin: 10px;
+            padding: 8px;
+            margin-bottom: 40px;
+            font-size: 20px;
+            font-family: 'Poppins', Arial, sans-serif;
+
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body> 
+    <img src="logo-pharmaclub.png" alt="Logo de la empresa" class="Logo">
+    <div class="container">
+        <h1 class="titulo-principal">Generar Cheque Aurora</h1>
+        <input type="file" id="imageInput" accept="image/*">
+        <input type="text" id="barcodeInput" placeholder="Ingrese código ">
+        <button onclick="processImage()">Genere Cheque</button>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let baseImage;
+
+        function processImage() {
+            const file = document.getElementById('imageInput').files[0];
+            const barcodeValue = document.getElementById('barcodeInput').value;
+
+            if (!file || !barcodeValue) {
+                alert('Por favor, seleccione una imagen y ingrese un código de barras.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                baseImage = new Image();
+                baseImage.onload = function() {
+                    canvas.width = baseImage.width;
+                    canvas.height = baseImage.height;
+                    ctx.drawImage(baseImage, 0, 0);
+                    addBarcode(barcodeValue);
+                }
+                baseImage.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function addBarcode(barcodeValue) {
+            const barcodeCanvas = document.createElement('canvas');
+            JsBarcode(barcodeCanvas, barcodeValue, {
+                format: "CODE128",
+                width: 2,
+                height: 60,
+                displayValue: true,
+                fontSize: 12,
+                textMargin: 2,
+                marginBottom: 2
+            });
+
+            const barcodeImage = new Image();
+            barcodeImage.onload = function() {
+                const x = 170;
+                const y = 475;
+                ctx.fillStyle = 'white';
+                ctx.fillRect(x, y, barcodeImage.width, barcodeImage.height);
+                ctx.drawImage(barcodeImage, x, y);
+            }
+            barcodeImage.src = barcodeCanvas.toDataURL();
+        }
+    </script>
+</body>
+</html>
